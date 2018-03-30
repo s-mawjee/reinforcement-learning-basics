@@ -17,7 +17,7 @@ class GridworldEnv(discrete.DiscreteEnv):
 
     For example, a 4x4 grid looks as follows:
 
-    T  o  o  o
+    o  o  o  o
     o  x  o  o
     o  o  o  o
     o  o  o  T
@@ -53,8 +53,8 @@ class GridworldEnv(discrete.DiscreteEnv):
 
             P[s] = {a: [] for a in range(nA)}
 
-            def is_done(s): return s == 0 or s == (nS - 1)
-            reward = 0.0 if is_done(s) else -1.0
+            def is_done(s): return s == (nS - 1)
+            reward = 1.0 if is_done(s) else -1.0
 
             # We're stuck in a terminal state
             if is_done(s):
@@ -98,7 +98,7 @@ class GridworldEnv(discrete.DiscreteEnv):
 
             if self.s == s:
                 output = " x "
-            elif s == 0 or s == self.nS - 1:
+            elif s == self.nS - 1:
                 output = " T "
             else:
                 output = " o "

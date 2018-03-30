@@ -52,5 +52,3 @@ class Agent:
             plt.close(fig3)
         else:
             plt.show(fig3)
-
-        # return fig1, fig2, fig3

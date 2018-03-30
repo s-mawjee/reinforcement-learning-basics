@@ -1,8 +1,6 @@
 from Agents.agent import Agent
-import gym
 import itertools
 import numpy as np
-import pandas as pd
 import sys
 
 from collections import defaultdict
