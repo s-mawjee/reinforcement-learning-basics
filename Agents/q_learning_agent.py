@@ -35,6 +35,13 @@ class QLearningAgent(Agent):
         td_delta = td_target - self.Q[state][action]
         self.Q[state][action] += self.alpha * td_delta
 
+    def print_policy(self):
+        q = dict(self.Q)
+        for x in q:
+            print(x)
+            for idx, val in enumerate(q[x]):
+                print('  ', idx, ':', val)
+
     # def learn(self):
     #
     #     for i_episode in range(self.num_episodes):

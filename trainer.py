@@ -6,7 +6,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 from Agents.q_learning_agent import QLearningAgent
-from Environments.gridworld import GridworldEnv
+from Environments.rooms import RoomsEnv
 
 
 def plot_episode_stats(episode_lengths, episode_rewards, smoothing_window=10, no_show=False):
@@ -49,7 +49,7 @@ def plot_episode_stats(episode_lengths, episode_rewards, smoothing_window=10, no
 
 
 if __name__ == '__main__':
-    num_episodes = 200
+    num_episodes = 50000
     discount_factor = 1.0
     alpha = 0.5
     epsilon = 0.1
@@ -58,7 +58,11 @@ if __name__ == '__main__':
     episode_lengths = np.zeros(num_episodes)
     episode_rewards = np.zeros(num_episodes)
 
-    env = GridworldEnv()
+    # shape = [4, 4]
+    # walls = [2, 5, 6, 14]
+    # goal = 3
+    # env = RoomsEnv(shape, walls, goal)
+    env = RoomsEnv()
     agent = QLearningAgent(env, num_episodes, discount_factor, alpha, epsilon)
 
     print('START - ' + agent.get_name())
@@ -66,12 +70,14 @@ if __name__ == '__main__':
     for i_episode in range(num_episodes):
         # Print out which episode we're on, useful for debugging.
         if (i_episode + 1) % 100 == 0:
-            print("\rEpisode {}/{}".format(i_episode +
-                                           1, num_episodes))
+            print("\rEpisode: {}/{}".format(i_episode +
+                                            1, num_episodes))
             sys.stdout.flush()
 
         # Reset the environment and pick the first action
         state = env.reset()
+        while state in env.walls:  # TODO Refactor to exclude walls from possiable states
+            state = env.reset()
 
         # One step in the environment
         # total_reward = 0.0
@@ -95,3 +101,4 @@ if __name__ == '__main__':
 
     # plot_episode_stats(episode_lengths, episode_rewards)
     print('END - ' + agent.get_name())
+    agent.print_policy()
