@@ -7,6 +7,8 @@ import sys
 import numpy as np
 from gym.envs.toy_text import discrete
 
+from Environments.option import Option
+
 UP = 0
 RIGHT = 1
 DOWN = 2
@@ -14,7 +16,6 @@ LEFT = 3
 
 
 class RoomsEnv(discrete.DiscreteEnv):
-    metadata = {'render.modes': ['human', 'ansi']}
     walls = [8, 24, 40, 72, 88, 104, 120, 136, 152, 168, 184, 200, 216, 248, 128, 129, 131, 132, 133, 134, 135, 136,
              137, 139, 140, 141, 142, 143]
 
@@ -110,3 +111,40 @@ class RoomsEnv(discrete.DiscreteEnv):
                 outfile.write("\n")
 
             it.iternext()
+
+
+class RoomsWithOptions(RoomsEnv):
+    I = [1, 3, 5, 7]
+    pi = {1: [0, 1, 0, 0],
+          2: [0, 1, 0, 0],
+          3: [0, 1, 0, 0],
+          4: [0, 1, 0, 0],
+          5: [0, 1, 0, 0],
+          6: [0, 1, 0, 0],
+          7: [0, 0, 1, 0],
+          23: [0, 0, 1, 0],
+          39: [0, 0, 1, 0],
+          55: [0, 1, 0, 0],
+          }
+    B = {56: 1}
+    option = Option(I, pi, B)
+
+    def __init__(self, options=[option]):
+        RoomsEnv.__init__(self)
+        self.options = options
+
+    def get_options(self):
+        return self.options
+
+
+if __name__ == '__main__':
+    # shape = [4, 4]
+    # walls = [2, 5, 6, 14]
+    # goal = 3
+    # env = RoomsEnv
+    env = RoomsWithOptions()
+    grid = np.arange(np.prod(env.shape)).reshape(env.shape)
+    print(grid)
+    print()
+    env.reset()
+    env._render()

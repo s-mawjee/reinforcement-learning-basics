@@ -1,5 +1,4 @@
 import itertools
-import sys
 
 import numpy as np
 import pandas as pd
@@ -58,10 +57,6 @@ if __name__ == '__main__':
     episode_lengths = np.zeros(num_episodes)
     episode_rewards = np.zeros(num_episodes)
 
-    # shape = [4, 4]
-    # walls = [2, 5, 6, 14]
-    # goal = 3
-    # env = RoomsEnv(shape, walls, goal)
     env = RoomsEnv()
     agent = QLearningAgent(env, num_episodes, discount_factor, alpha, epsilon)
 
@@ -69,10 +64,9 @@ if __name__ == '__main__':
 
     for i_episode in range(num_episodes):
         # Print out which episode we're on, useful for debugging.
-        if (i_episode + 1) % 100 == 0:
+        if (i_episode + 1) % 1000 == 0:
             print("\rEpisode: {}/{}".format(i_episode +
                                             1, num_episodes))
-            sys.stdout.flush()
 
         # Reset the environment and pick the first action
         state = env.reset()
@@ -98,6 +92,9 @@ if __name__ == '__main__':
                 break
 
             state = next_state
+
+        # tf.summary.scalar('episode_reward', episode_rewards[i_episode] )
+        # tf.summary.scalar('episode_length', episode_lengths[i_episode])
 
     # plot_episode_stats(episode_lengths, episode_rewards)
     print('END - ' + agent.get_name())

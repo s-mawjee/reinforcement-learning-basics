@@ -6,10 +6,9 @@ from Agents.agent import Agent
 
 
 class QLearningAgent(Agent):
-    def __init__(self, env, num_episodes, discount_factor=1.0, alpha=0.5, epsilon=0.1):
-        Agent.__init__(self, 'Q Learning Agent', num_episodes)
+    def __init__(self, env, discount_factor=1.0, alpha=0.5, epsilon=0.1, name='Q Learning Agent'):
+        Agent.__init__(self, name)
         self.env = env
-        self.num_episodes = num_episodes
         self.discount_factor = discount_factor
         self.alpha = alpha
         self.epsilon = epsilon
@@ -38,7 +37,9 @@ class QLearningAgent(Agent):
     def print_policy(self):
         q = dict(self.Q)
         for x in q:
-            print(x)
+            print('State: ', x)
+            print('Best Action: ', np.argmax(q[x]))
+            print('Q Values:')
             for idx, val in enumerate(q[x]):
                 print('  ', idx, ':', val)
 
@@ -81,3 +82,10 @@ class QLearningAgent(Agent):
     #             state = next_state
     #
     #     return self.Q  # , stats
+
+
+class QLearningWithOptionsAgent(QLearningAgent):
+    def __init__(self, env, discount_factor=1.0, alpha=0.5, epsilon=0.1, name='Q Learning With Options Agent'):
+        QLearningAgent.__init__(self, env, discount_factor, alpha, epsilon, name)
+
+    # TODO Check if option then update accordingly.
