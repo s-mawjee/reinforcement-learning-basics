@@ -31,7 +31,7 @@ class GridworldEnv(discrete.DiscreteEnv):
 
     metadata = {'render.modes': ['human', 'ansi']}
 
-    def __init__(self, shape=[4, 4]):
+    def __init__(self, shape=[16, 16]):
         if not isinstance(shape, (list, tuple)) or not len(shape) == 2:
             raise ValueError('shape argument must be a list/tuple of length 2')
 
@@ -53,7 +53,9 @@ class GridworldEnv(discrete.DiscreteEnv):
 
             P[s] = {a: [] for a in range(nA)}
 
-            def is_done(s): return s == (nS - 1)
+            def is_done(s):
+                return s == (nS - 1)
+
             reward = 1.0 if is_done(s) else -1.0
 
             # We're stuck in a terminal state

@@ -1,32 +1,32 @@
 from collections import defaultdict
-
 import numpy as np
-
 from Agents.agent import Agent
+from Agents.policy import *
 
 
-class QLearningAgent(Agent):
-    def __init__(self, env, discount_factor=1.0, alpha=0.5, epsilon=0.1, name='Q Learning Agent'):
+class QLearning(Agent):
+    def __init__(self, nA, policy='e-greedy', discount_factor=1.0, alpha=0.1, epsilon=0.001, name='Q Learning Agent'):
         Agent.__init__(self, name)
-        self.env = env
-        self.discount_factor = discount_factor
+        self.nA = nA  # Number of actions
+        self.discount_factor = discount_factor  # gamma
         self.alpha = alpha
         self.epsilon = epsilon
 
-        # A nested dictionary that maps state -> (action -> action-value).
-        self.Q = defaultdict(lambda: np.zeros(self.env.action_space.n))
+        # Dictionary that maps state -> (action -> action-value).
+        self.Q = defaultdict(lambda: np.zeros(self.nA))
 
-    def epsilon_greedy_policy(self, observation):
-        action = np.ones(self.env.action_space.n, dtype=float) * self.epsilon / self.env.action_space.n
-        best_action = np.argmax(self.Q[observation])
-        action[best_action] += (1.0 - self.epsilon)
-        return action
+        if policy == 'e-greedy':
+            self.policy = make_epsilon_greedy_policy(self.Q, self.epsilon, self.nA)
+        elif policy == 'greedy':
+            self.policy = make_greedy_policy(self.Q, self.epsilon, self.nA)
+        elif policy == 'random':
+            self.policy = make_random_policy(self.Q, self.epsilon, self.nA)
+        else:
+            self.policy = make_epsilon_greedy_policy(self.Q, self.epsilon, self.nA)
+
 
     def get_action(self, state):
-        action_probs = self.epsilon_greedy_policy(state)
-        action = np.random.choice(
-            np.arange(len(action_probs)), p=action_probs)
-        return action
+        return self.policy(state)
 
     def update(self, state, action, reward, next_state):
         best_next_action = np.argmax(self.Q[next_state])
@@ -83,9 +83,7 @@ class QLearningAgent(Agent):
     #
     #     return self.Q  # , stats
 
-
-class QLearningWithOptionsAgent(QLearningAgent):
-    def __init__(self, env, discount_factor=1.0, alpha=0.5, epsilon=0.1, name='Q Learning With Options Agent'):
-        QLearningAgent.__init__(self, env, discount_factor, alpha, epsilon, name)
-
-    # TODO Check if option then update accordingly.
+# class QLearningWithOptionsAgent(QLearningAgent):
+#     def __init__(self, env, discount_factor=1.0, alpha=0.5, epsilon=0.1, name='Q Learning With Options Agent'):
+#         QLearningAgent.__init__(self, env, discount_factor, alpha, epsilon, name)
+#
