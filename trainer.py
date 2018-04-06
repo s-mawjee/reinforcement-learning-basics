@@ -9,7 +9,9 @@ import gym
 from Environments.rooms import RoomsEnv
 from Environments.gridworld import GridworldEnv
 
-from Agents.q_learning_agent import QLearning
+from Agents.q_learning import QLearning
+from Agents.sarsa import Sarsa
+from Agents.expected_sarsa import ExpectedSarsa
 
 
 def plot_episode_stats(name, episode_lengths, episode_rewards, smoothing_window=10, no_show=False):
@@ -68,11 +70,11 @@ def train(env, agent, num_episodes=20000):
     for i_episode in range(num_episodes):
         # Reset the environment
         state = env.reset()
+        # Take a step
+        action = agent.get_action(state)
 
         for t in itertools.count():
 
-            # Take a step
-            action = agent.get_action(state)
             next_state, reward, done, _ = env.step(action)
 
             # Append statistics
@@ -80,8 +82,7 @@ def train(env, agent, num_episodes=20000):
             episode_lengths[i_episode] = t
 
             # TD Update
-            agent.update(state, action, reward, next_state)
-
+            action = agent.update(state, action, reward, next_state)
             state = next_state
             if done:
                 samp_rewards.append(episode_rewards[i_episode])
@@ -106,14 +107,21 @@ def train(env, agent, num_episodes=20000):
 
 
 if __name__ == '__main__':
-    num_episodes = 10000
+    num_episodes = 50000
     discount_factor = 1.0
     alpha = 0.1
     epsilon = 0.001
     policy = 'e-greedy'
-    name = 'Q Learning:' + policy
     env = gym.make('Taxi-v2')
-    agent = QLearning(env.action_space.n, policy, discount_factor, alpha, epsilon, name)
 
+    agent = Sarsa(env.action_space.n, policy, alpha, discount_factor, epsilon)
     training_state = train(env, agent, num_episodes)
-    plot_episode_stats(name, training_state[0], training_state[1], 100)
+    plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+
+    agent = QLearning(env.action_space.n, policy, alpha, discount_factor, epsilon)
+    training_state = train(env, agent, num_episodes)
+    plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+
+    agent = ExpectedSarsa(env.action_space.n, policy, alpha, discount_factor, epsilon)
+    training_state = train(env, agent, num_episodes)
+    plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
