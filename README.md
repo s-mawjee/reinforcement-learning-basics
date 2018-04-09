@@ -8,7 +8,7 @@
 ## Environments
 * Grid World
 * Rooms
-* OpenAI Gym - [FrozenLake8x8-v0](https://gym.openai.com/envs/FrozenLake8x8-v0/)
+* OpenAI Gym - [CliffWalking-v0](https://gym.openai.com/envs/CliffWalking-v0/)
 * OpenAI Gym - [Taxi-v2](https://gym.openai.com/envs/Taxi-v2/) 
 
 

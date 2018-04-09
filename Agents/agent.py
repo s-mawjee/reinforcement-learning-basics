@@ -30,3 +30,12 @@ class Agent:
         action_probs = self.policy(state)
         action = np.random.choice(np.arange(len(action_probs)), p=action_probs)
         return action
+
+    def print_policy(self):
+        q = dict(self.Q)
+        for x in q:
+            print('State: ', x)
+            print('Best Action: ', np.argmax(q[x]))
+            print('Q Values:')
+            for idx, val in enumerate(q[x]):
+                print('  ', idx, ':', val)

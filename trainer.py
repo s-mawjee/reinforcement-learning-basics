@@ -53,6 +53,21 @@ def plot_episode_stats(name, episode_lengths, episode_rewards, smoothing_window=
         fig3.show()
 
 
+def plot_values(state_shape, q_values):
+    values = [np.max(q_values[key]) if key in q_values else 0 for key in np.arange(np.prod(state_shape))]
+    # reshape the state-value function
+    values = np.reshape(values, state_shape)
+    # plot the state-value function
+    fig = plt.figure(figsize=(15, 5))
+    ax = fig.add_subplot(111)
+    im = ax.imshow(values, cmap='cool')
+    for (j, i), label in np.ndenumerate(values):
+        ax.text(i, j, np.round(label, 3), ha='center', va='center', fontsize=14)
+    plt.tick_params(bottom='off', left='off', labelbottom='off', labelleft='off')
+    plt.title('State-Value Function')
+    plt.show()
+
+
 def train(env, agent, num_episodes=20000):
     # Keeps track of statistics
     episode_lengths = np.zeros(num_episodes)
@@ -107,21 +122,22 @@ def train(env, agent, num_episodes=20000):
 
 
 if __name__ == '__main__':
-    num_episodes = 50000
+    num_episodes = 10000
     discount_factor = 1.0
     alpha = 0.1
     epsilon = 0.001
     policy = 'e-greedy'
-    env = gym.make('Taxi-v2')
+    env = gym.make('CliffWalking-v0')  # gym.make('FrozenLake8x8-v0')
 
-    agent = Sarsa(env.action_space.n, policy, alpha, discount_factor, epsilon)
-    training_state = train(env, agent, num_episodes)
-    plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
-
-    agent = QLearning(env.action_space.n, policy, alpha, discount_factor, epsilon)
-    training_state = train(env, agent, num_episodes)
-    plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+    # agent = Sarsa(env.action_space.n, policy, alpha, discount_factor, epsilon)
+    # training_state = train(env, agent, num_episodes)
+    # plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+    #
+    # agent = QLearning(env.action_space.n, policy, alpha, discount_factor, epsilon)
+    # training_state = train(env, agent, num_episodes)
+    # plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
 
     agent = ExpectedSarsa(env.action_space.n, policy, alpha, discount_factor, epsilon)
     training_state = train(env, agent, num_episodes)
     plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+    plot_values((4, 12), agent.Q)

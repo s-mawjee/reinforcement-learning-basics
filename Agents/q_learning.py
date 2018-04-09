@@ -12,12 +12,3 @@ class QLearning(Agent):
         td_delta = td_target - self.Q[state][action]
         self.Q[state][action] += (self.alpha * td_delta)
         return self.get_action(next_state)
-
-    def print_policy(self):
-        q = dict(self.Q)
-        for x in q:
-            print('State: ', x)
-            print('Best Action: ', np.argmax(q[x]))
-            print('Q Values:')
-            for idx, val in enumerate(q[x]):
-                print('  ', idx, ':', val)
