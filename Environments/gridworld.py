@@ -17,8 +17,8 @@ class GridworldEnv(discrete.DiscreteEnv):
 
     For example, a 4x4 grid looks as follows:
 
+    x  o  o  o
     o  o  o  o
-    o  x  o  o
     o  o  o  o
     o  o  o  T
 
@@ -31,7 +31,7 @@ class GridworldEnv(discrete.DiscreteEnv):
 
     metadata = {'render.modes': ['human', 'ansi']}
 
-    def __init__(self, shape=[16, 16]):
+    def __init__(self, shape=[8, 8]):
         if not isinstance(shape, (list, tuple)) or not len(shape) == 2:
             raise ValueError('shape argument must be a list/tuple of length 2')
 

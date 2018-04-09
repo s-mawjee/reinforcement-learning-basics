@@ -58,11 +58,11 @@ def plot_values(state_shape, q_values):
     # reshape the state-value function
     values = np.reshape(values, state_shape)
     # plot the state-value function
-    fig = plt.figure(figsize=(15, 5))
+    fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111)
-    im = ax.imshow(values, cmap='cool')
+    im = ax.imshow(values)
     for (j, i), label in np.ndenumerate(values):
-        ax.text(i, j, np.round(label, 3), ha='center', va='center', fontsize=14)
+        ax.text(i, j, np.round(label, 3), ha='center', va='center', fontsize=12)
     plt.tick_params(bottom='off', left='off', labelbottom='off', labelleft='off')
     plt.title('State-Value Function')
     plt.show()
