@@ -130,14 +130,14 @@ if __name__ == '__main__':
     env = gym.make('CliffWalking-v0')  # gym.make('FrozenLake8x8-v0')
 
     # agent = Sarsa(env.action_space.n, policy, alpha, discount_factor, epsilon)
-    # training_state = train(env, agent, num_episodes)
-    # plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+    # training_stats = train(env, agent, num_episodes)
+    # plot_episode_stats(agent.get_name(), training_stats[0], training_stats[1], 100)
     #
     # agent = QLearning(env.action_space.n, policy, alpha, discount_factor, epsilon)
-    # training_state = train(env, agent, num_episodes)
-    # plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+    # training_stats = train(env, agent, num_episodes)
+    # plot_episode_stats(agent.get_name(), training_stats[0], training_stats[1], 100)
 
     agent = ExpectedSarsa(env.action_space.n, policy, alpha, discount_factor, epsilon)
-    training_state = train(env, agent, num_episodes)
-    plot_episode_stats(agent.get_name(), training_state[0], training_state[1], 100)
+    training_stats = train(env, agent, num_episodes)
+    plot_episode_stats(agent.get_name(), training_stats[0], training_stats[1], 100)
     plot_values((4, 12), agent.Q)
