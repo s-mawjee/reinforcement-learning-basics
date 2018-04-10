@@ -4,10 +4,11 @@
 * Sarsa
 * Q Learning
 * Expected Sarsa
+* Feudal Q Learning (WIP)
 
 ## Environments
 * Grid World
-* Rooms
+* Rooms (WIP)
 * OpenAI Gym - [CliffWalking-v0](https://gym.openai.com/envs/CliffWalking-v0/)
 * OpenAI Gym - [Taxi-v2](https://gym.openai.com/envs/Taxi-v2/) 
 

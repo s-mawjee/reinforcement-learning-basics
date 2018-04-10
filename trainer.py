@@ -41,16 +41,16 @@ def plot_episode_stats(name, episode_lengths, episode_rewards, smoothing_window=
         fig2.show()
 
     # Plot time steps and episode number
-    fig3 = plt.figure(figsize=(10, 5))
-    plt.plot(np.cumsum(episode_lengths),
-             np.arange(len(episode_lengths)))
-    plt.xlabel("Time Steps")
-    plt.ylabel("Episode")
-    plt.title(name + " - Episode per time step")
-    if no_show:
-        plt.close(fig3)
-    else:
-        fig3.show()
+    # fig3 = plt.figure(figsize=(10, 5))
+    # plt.plot(np.cumsum(episode_lengths),
+    #          np.arange(len(episode_lengths)))
+    # plt.xlabel("Time Steps")
+    # plt.ylabel("Episode")
+    # plt.title(name + " - Episode per time step")
+    # if no_show:
+    #     plt.close(fig3)
+    # else:
+    #     pass#fig3.show()
 
 
 def plot_values(state_shape, q_values):
