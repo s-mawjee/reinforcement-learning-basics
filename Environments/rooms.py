@@ -11,8 +11,9 @@ LEFT = 3
 class RoomsEnv(discrete.DiscreteEnv):
     metadata = {'render.modes': ['human', 'ansi']}
 
-    def __init__(self, shape=(16, 16)):
+    def __init__(self, shape=(16, 16), goal=(15, 15)):
         self.shape = shape
+        self.goal = goal
         self.start_state_index = np.ravel_multi_index((0, 0), self.shape)
 
         nS = np.prod(self.shape)
@@ -40,7 +41,7 @@ class RoomsEnv(discrete.DiscreteEnv):
             P[s][LEFT] = self._calculate_transition_prob(position, [0, -1])
 
         # Calculate initial state distribution
-        # We always start in state (3, 0)
+        # We always start in state (0, 0)
         isd = np.zeros(nS)
         isd[self.start_state_index] = 1.0
 
@@ -71,7 +72,7 @@ class RoomsEnv(discrete.DiscreteEnv):
         if self._walls[tuple(new_position)]:
             return [(1.0, self.start_state_index, -100, False)]
 
-        terminal_state = (self.shape[0] - 1, self.shape[1] - 1)
+        terminal_state = self.goal
         is_done = tuple(new_position) == terminal_state
         return [(1.0, new_state, -1, is_done)]
 
@@ -83,7 +84,7 @@ class RoomsEnv(discrete.DiscreteEnv):
             if self.s == s:
                 output = " x "
             # Print terminal state
-            elif position == (3, 11):
+            elif position == self.goal:
                 output = " T "
             elif self._walls[position]:
                 output = " W "
